@@ -7,6 +7,12 @@ safe concurrent edits, keeps an append-only history, and delivers notifications 
 
 Submission for the Newtonite Software Engineering Challenge, *Operations Under Pressure*.
 
+##LIVE LINK
+
+
+[![Live Demo](https://newtonite-ops-2300970100033.vercel.app/login?next=%2F)
+
+
 ## Quick start
 
 **Prerequisite:** Docker Desktop (Docker Compose 2.24 or newer).
