@@ -10,7 +10,7 @@ Submission for the Newtonite Software Engineering Challenge, *Operations Under P
 ##LIVE LINK
 
 
-[![Live Demo](https://newtonite-ops-2300970100033.vercel.app/login?next=%2F)
+[Live Demo](https://newtonite-ops-2300970100033.vercel.app/login?next=%2F)
 
 
 ## Quick start
