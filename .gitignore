@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+.env
+*.log
+.DS_Store
+.vercel/
+# assignment briefs are not ours to publish
+*.pdf
+# personal interview preparation notes (kept local, not part of the submission)
+help/

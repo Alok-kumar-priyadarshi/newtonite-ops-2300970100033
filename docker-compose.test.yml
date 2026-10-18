@@ -1,0 +1,19 @@
+# Disposable Postgres for automated tests (data lives in memory).
+name: newtonite-ops-test
+services:
+  db-test:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: nops
+      POSTGRES_PASSWORD: nops
+      POSTGRES_DB: nops_test
+    ports:
+      - "55432:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    command: ["postgres", "-c", "fsync=off", "-c", "synchronous_commit=off", "-c", "full_page_writes=off"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nops -d nops_test"]
+      interval: 1s
+      timeout: 3s
+      retries: 30

@@ -1,0 +1,56 @@
+# Backend settings: safe defaults from backend/.env.example, overridden by backend/.env if it
+# exists (e.g. GROQ_API_KEY). The database URL always points at the db container.
+x-backend: &backend
+  build: .
+  env_file:
+    - path: backend/.env.example
+    - path: backend/.env
+      required: false
+  environment:
+    DATABASE_URL: postgres://nops:nops@db:5432/nops
+    PORT: 8080
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: nops
+      POSTGRES_PASSWORD: nops
+      POSTGRES_DB: nops
+    ports:
+      # 5433 on the host so it never clashes with a locally installed Postgres on 5432.
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nops -d nops"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  # Runs migrations, then seeds demo data if the database is empty. Exits when done.
+  migrate:
+    <<: *backend
+    command: ["sh", "-c", "node backend/dist/migrate.js && node backend/dist/seed.js"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    <<: *backend
+    command: ["node", "backend/dist/server.js"]
+    ports:
+      - "8080:8080"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  worker:
+    <<: *backend
+    command: ["node", "backend/dist/worker.js"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+volumes:
+  pgdata:

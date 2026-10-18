@@ -1,0 +1,21 @@
+{
+  "name": "newtonite-ops",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "shared",
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "npm run build -w frontend && npm run build -w backend",
+    "db:migrate": "npm run db:migrate -w backend",
+    "db:seed": "npm run db:seed -w backend",
+    "test": "node scripts/test.mjs",
+    "typecheck": "npm run typecheck -w backend && npm run typecheck -w frontend"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
